@@ -47,17 +47,14 @@ class GithubClient
         return empty($this->queryParams) ? $url : $url . '?' . http_build_query($this->queryParams);
     }
 
-    public function addLabels($name, $color)
+    public function addLabels($label)
     {
         $this->setAuth();
         $url = $this->setUrl("issues/{$this->number}/labels");
         if ($this->isDebug) {
             var_dump(['url' => $url]);
         }
-        $params = [
-            'name'  => $name,
-            'color' => $color,
-        ];
+        $params = [$label];
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_POST, 1);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));

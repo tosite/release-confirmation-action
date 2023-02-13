@@ -26,12 +26,6 @@ inputs:
   releasedLabel:
     description: 'after released label'
     default: 'action-released'
-  mergedLabelColor:
-    description: 'label color(default: #ffcc99)'
-    default: '#ffcc99'
-  releasedLabelColor:
-    description: 'label color(default: #ffcc99)'
-    default: '#ffcc99'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -42,8 +36,6 @@ runs:
     - ${{ inputs.number }}
     - ${{ inputs.mergedLabel }}
     - ${{ inputs.releasedLabel }}
-    - ${{ inputs.mergedLabelColor }}
-    - ${{ inputs.releasedLabelColor }}
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
     SLACK_API_TOKEN: ${{ inputs.slackApiToken }}

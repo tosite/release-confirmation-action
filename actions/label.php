@@ -13,8 +13,6 @@ $keys = [
     'number',
     'merged_label',
     'released_label',
-    'merged_color',
-    'released_color',
 ];
 $params = array_combine($keys, $argv);
 $cli = new GithubClient($params['base_url']);
@@ -29,5 +27,5 @@ if ($isDebug) {
 }
 
 echo "==== post api.  ====\n";
-$cli->addLabels($params['merged_label'], $params['merged_color']);
+$cli->addLabels($params['merged_label']);
 echo "==== finish.    ====\n";
