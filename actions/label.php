@@ -17,8 +17,9 @@ $keys = [
     'released_color',
 ];
 $params = array_combine($keys, $argv);
-$params['url'] = $params['base_url'] . "/${params['repo']}";
 $cli = new GithubClient($params['base_url']);
+$cli->setRepo($params['repo']);
+$cli->setNumber($params['number']);
 if ($isDebug) {
     var_dump([
         'params'       => $params,
