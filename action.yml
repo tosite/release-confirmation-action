@@ -42,9 +42,9 @@ runs:
     - ${{ inputs.number }}
     - ${{ inputs.mergedLabel }}
     - ${{ inputs.releasedLabel }}
-    - ${{ inputs.notifySubject }}
-    - ${{ inputs.mention }}
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
     SLACK_WEBHOOK: ${{ inputs.slackWebhook }}
     DEBUG_MODE: ${{ inputs.isDebug }}
+    SUBJECT: ${{ inputs.notifySubject }}
+    MENTION: ${{ inputs.mention }}

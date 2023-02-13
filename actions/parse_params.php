@@ -8,8 +8,6 @@ $keys = [
     'number',
     'merged_label',
     'released_label',
-    'subject',
-    'mention',
 ];
 if ($isDebug) {
     var_dump(['key' => $keys, 'values' => $argv]);

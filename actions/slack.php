@@ -17,9 +17,9 @@ class SlackClient
         $this->isDebug = true;
     }
 
-    public function send($subject, $pulls, $mention)
+    public function send($pulls)
     {
-        $data = "payload=" . json_encode(["text" => $this->buildMessage($subject, $pulls, $mention)]);
+        $data = "payload=" . json_encode(["text" => $this->buildMessage($pulls)]);
         if ($this->isDebug) {
             var_dump($data);
         }
@@ -37,9 +37,11 @@ class SlackClient
         curl_close($ch);
     }
 
-    protected function buildMessage($subject, $pulls, $mention)
+    protected function buildMessage($pulls)
     {
         $message = '';
+        $mention = getenv('MENTION');
+        $subject = getenv('SUBJECT');
         if ($mention !== 'NULL') {
             $message .= "$mention\n";
         }
