@@ -33,6 +33,7 @@ class GithubClient
     public function setAuth()
     {
         $this->curl = curl_init();
+        $this->setAuth();
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             "Authorization: token " . getenv('GITHUB_TOKEN'),
             "Content-Type: application/json",
@@ -49,7 +50,6 @@ class GithubClient
 
     public function addLabels($label)
     {
-        $this->setAuth();
         $url = $this->setUrl("issues/{$this->number}/labels");
         if ($this->isDebug) {
             var_dump(['url' => $url]);
@@ -69,9 +69,24 @@ class GithubClient
         curl_close($this->curl);
     }
 
-    public function removeLabels()
+    public function removeLabel($label)
     {
-
+        $url = $this->setUrl("issues/{$this->number}/labels/{$label}");
+        if ($this->isDebug) {
+            var_dump(['url' => $url]);
+        }
+        curl_setopt($this->curl, CURLOPT_URL, $url);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));
+        $res = curl_exec($this->curl);
+        if ($this->isDebug) {
+            var_dump($res);
+        }
+        if (curl_errno($this->curl)) {
+            die('Error:' . curl_error($this->curl));
+        }
+        echo "[success]remove label.\n";
+        curl_close($this->curl);
     }
 
     public function fetchClosedPulls()
