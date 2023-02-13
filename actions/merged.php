@@ -3,7 +3,7 @@
 require_once 'client.php';
 $isDebug = (int)getenv('DEBUG_MODE') === 1;
 
-echo "==== add label. ====\n";
+echo "==== start.        ====\n";
 
 $keys = [
     'endpoint',
@@ -26,6 +26,6 @@ if ($isDebug) {
     $cli->setDebugMode();
 }
 
-echo "==== post api.  ====\n";
+echo "==== add label.    ====\n";
 $cli->addLabels($params['merged_label']);
-echo "==== finish.    ====\n";
+echo "==== finish.       ====\n";
