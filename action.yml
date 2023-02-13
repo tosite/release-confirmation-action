@@ -9,12 +9,15 @@ inputs:
   releasedLabel:
     description: 'after released label'
     default: 'action-released'
+  repo:
+    description: 'hoge'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.action }}
     - ${{ inputs.mergedLabel }}
+    - ${{ inputs.repo }}
   env:
     GITHUB_TOKEN: ${{ inputs.github-token }}
     SLACK_API_TOKEN: ${{ inputs.slack-api-token }}
