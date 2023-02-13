@@ -7,7 +7,7 @@ class GithubClient
     protected $queryParams;
     protected $token;
 
-    public function __construct($baseUrl, $queryParams = [])
+    public function __construct($baseUrl, $token, $queryParams = [])
     {
         $this->curl = curl_init();
         $this->url = $baseUrl;

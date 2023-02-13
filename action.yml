@@ -20,7 +20,7 @@ inputs:
     default: 'action-released'
   labelColor:
     description: 'label color(default: #ffcc99)'
-    default: 'action-released'
+    default: '#ffcc99'
 runs:
   using: 'docker'
   image: 'Dockerfile'

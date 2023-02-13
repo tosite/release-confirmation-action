@@ -1,6 +1,19 @@
 <?php
 
 echo "add label.";
-//$cli = new GithubClient();
-//$cli->addLabels($argv[2], '#ffcc99');
+$keys = [
+    'endpoint',
+    'action',
+    'base_url',
+    'repo',
+    'number',
+    'merged_label',
+    'released_label',
+    'merged_color',
+    'released_color',
+];
+$params = array_combine($keys, $argv);
+var_dump($params, getenv('GITHUB_TOKEN'));
+//$cli = new GithubClient($params['base_url']);
+//$cli->addLabels($params['merged_label'], $params['merged_color']);
 var_dump($argv);
