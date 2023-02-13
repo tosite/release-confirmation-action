@@ -6,11 +6,23 @@ class GithubClient
     protected $url;
     protected $queryParams;
     protected $isDebug = false;
+    protected $repo;
+    protected $number;
 
     public function __construct($baseUrl, $queryParams = [])
     {
         $this->url = $baseUrl;
         $this->queryParams = $queryParams;
+    }
+
+    public function setRepo($repo)
+    {
+        $this->repo = $repo;
+    }
+
+    public function setNumber($number)
+    {
+        $this->number = $number;
     }
 
     public function setDebugMode()
@@ -28,29 +40,31 @@ class GithubClient
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
     }
 
-    protected function setUrl()
+    protected function setUrl($uri)
     {
-        return empty($this->queryParams) ? $this->url : $this->queryParams . '?' . http_build_query($this->queryParams);
+        $url = $this->url . "/{$this->repo}/{$uri}";
+        return empty($this->queryParams) ? $url : $url . '?' . http_build_query($this->queryParams);
     }
 
     public function addLabels($name, $color)
     {
         $this->setAuth();
+        $url = $this->setUrl("issues/{$this->number}/labels");
         if ($this->isDebug) {
-            var_dump(['url' => $this->setUrl()]);
+            var_dump(['url' => $url]);
         }
         $params = [
             'name'  => $name,
             'color' => $color,
         ];
-        curl_setopt($this->curl, CURLOPT_URL, $this->setUrl());
+        curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_POST, 1);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));
         curl_exec($this->curl);
         if (curl_errno($this->curl)) {
             die('Error:' . curl_error($this->curl));
         }
-        echo "[success]added label.";
+        echo "[success]added label.\n";
         curl_close($this->curl);
     }
 

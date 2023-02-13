@@ -3,7 +3,7 @@
 require_once 'client.php';
 $isDebug = (int)getenv('DEBUG_MODE') === 1;
 
-echo "==== add label. ====";
+echo "==== add label. ====\n";
 
 $keys = [
     'endpoint',
@@ -17,6 +17,7 @@ $keys = [
     'released_color',
 ];
 $params = array_combine($keys, $argv);
+$params['url'] = $params['base_url'] . "/${params['repo']}";
 $cli = new GithubClient($params['base_url']);
 if ($isDebug) {
     var_dump([
@@ -26,6 +27,6 @@ if ($isDebug) {
     $cli->setDebugMode();
 }
 
-echo "==== post api.  ====";
+echo "==== post api.  ====\n";
 $cli->addLabels($params['merged_label'], $params['merged_color']);
-echo "==== finish.    ====";
+echo "==== finish.    ====\n";
