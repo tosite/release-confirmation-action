@@ -31,7 +31,7 @@ inputs:
     default: 'List of pull requests that have not been released.'
   mention:
     description: 'Set slack user_id(e.g. <@USER_ID>|<!here>|<!channel>)'
-    default: 'NULL'
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'

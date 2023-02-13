@@ -32,5 +32,5 @@ $slack = new SlackClient();
 if ($isDebug) {
     $slack->debugMode();
 }
-$slack->send($res);
+$slack->send($params['slack_subject'], $res, $params['mention']);
 echo "==== finish.       ====\n";
