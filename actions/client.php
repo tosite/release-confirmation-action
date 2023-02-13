@@ -62,10 +62,10 @@ class GithubClient
         if ($this->isDebug) {
             var_dump($res);
         }
+        var_dump(curl_errno($this->curl));
         if (curl_errno($this->curl)) {
             die('Error:' . curl_error($this->curl));
         }
-        echo "[success]added label.\n";
         curl_close($this->curl);
     }
 
@@ -84,7 +84,7 @@ class GithubClient
         if (curl_errno($this->curl)) {
             die('Error:' . curl_error($this->curl));
         }
-        echo "[success]remove label.\n";
+        var_dump(curl_errno($this->curl));
         curl_close($this->curl);
     }
 
