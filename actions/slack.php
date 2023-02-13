@@ -18,7 +18,7 @@ class SlackClient
     {
         $data = "payload=" . json_encode(["text" => $this->buildMessage($pulls)]);
         if ($this->isDebug) {
-            var_dump($data);
+            var_dump(['data' => $data, 'webhook' => getenv('SLACK_WEBHOOK')]);
         }
 
         $ch = curl_init();
