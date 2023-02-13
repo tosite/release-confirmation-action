@@ -77,7 +77,6 @@ class GithubClient
         }
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));
         $res = curl_exec($this->curl);
         if ($this->isDebug) {
             var_dump($res);
