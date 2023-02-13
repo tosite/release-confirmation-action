@@ -11,4 +11,7 @@ $keys = [
     'subject',
     'mention',
 ];
+if ($isDebug) {
+    var_dump(['key' => $keys, 'values' => $argv]);
+}
 $params = array_combine($keys, $argv);
