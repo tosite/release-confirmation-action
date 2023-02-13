@@ -18,6 +18,8 @@ $params = array_combine($keys, $argv);
 $cli = new GithubClient($params['base_url']);
 $cli->setRepo($params['repo']);
 $cli->setNumber($params['number']);
+// Clone object
+$cli2 = clone $cli;
 if ($isDebug) {
     var_dump([
         'params'       => $params,
@@ -29,6 +31,6 @@ echo "==== remove label. ====\n";
 $cli->removeLabel($params['merged_label']);
 
 echo "==== add label.    ====\n";
-$cli->addLabels($params['released_label']);
+$cli2->addLabels($params['released_label']);
 
 echo "==== finish.       ====\n";
