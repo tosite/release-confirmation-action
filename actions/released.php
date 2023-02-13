@@ -36,4 +36,5 @@ $cli->setNumber($params['number']);
 if ($isDebug) {
     $cli->setDebugMode();
 }
+$cli->addLabels($params['released_label']);
 echo "==== finish.       ====\n";
