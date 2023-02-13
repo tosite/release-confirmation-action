@@ -35,7 +35,8 @@ class GithubClient
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             "Authorization: token " . getenv('GITHUB_TOKEN'),
-            "Content-Type: application/json"
+            "Content-Type: application/json",
+            "User-Agent: release-confirmation-action",
         ]);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
     }
