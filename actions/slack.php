@@ -14,9 +14,9 @@ class SlackClient
         $this->isDebug = true;
     }
 
-    public function send($pulls)
+    public function send($subject, $pulls, $mention)
     {
-        $data = "payload=" . json_encode(["text" => $this->buildMessage($pulls)]);
+        $data = "payload=" . json_encode(["text" => $this->buildMessage($subject, $pulls, $mention)]);
         if ($this->isDebug) {
             var_dump(['data' => $data, 'webhook' => getenv('SLACK_WEBHOOK')]);
         }
@@ -34,17 +34,15 @@ class SlackClient
         curl_close($ch);
     }
 
-    protected function buildMessage($pulls)
+    protected function buildMessage($subject, $pulls, $mention)
     {
         $message = '';
-        $mention = getenv('MENTION');
-        $subject = getenv('SUBJECT');
         if ($mention !== 'NULL') {
-            $message .= "$mention\n";
+            $message .= "$mention ";
         }
         $message .= "*{$subject}*\n\n";
         foreach ($pulls as $pull) {
-            $message .= "- <{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
+            $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
         }
         return $message;
     }

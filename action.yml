@@ -7,30 +7,30 @@ inputs:
   slackWebhook:
     description: 'SLACK_WEBHOOK'
   isDebug:
-    description: 'debug mode(=1)'
+    description: 'debug mode(disable:0, enable:1)'
     default: '0'
   action:
     description: 'entrypoint(merged|released|notify)'
   baseUrl:
-    description: ''
+    description: 'Base URL for GitHub API'
     default: "https://api.github.com/repos"
   repo:
-    description: 'owner/repo'
+    description: '{owner}/{repo}'
     default: "${{ github.repository }}"
   number:
     description: 'pull_request number'
     default: "${{ github.event.pull_request.number }}"
   mergedLabel:
-    description: 'after merged label'
+    description: 'After merged label'
     default: 'action-merged'
   releasedLabel:
-    description: 'after released label'
+    description: 'After released label'
     default: 'action-released'
   notifySubject:
-    description: ''
+    description: 'Title to notify Slack'
     default: 'List of pull requests that have not been released.'
   mention:
-    description: ''
+    description: 'Set slack user_id(e.g. <@USER_ID>|<!here>|<!channel>)'
     default: 'NULL'
 runs:
   using: 'docker'
@@ -40,11 +40,11 @@ runs:
     - ${{ inputs.baseUrl }}
     - ${{ inputs.repo }}
     - ${{ inputs.number }}
-    - ${{ inputs.mergedLabel }}
-    - ${{ inputs.releasedLabel }}
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
     SLACK_WEBHOOK: ${{ inputs.slackWebhook }}
     DEBUG_MODE: ${{ inputs.isDebug }}
     SUBJECT: ${{ inputs.notifySubject }}
     MENTION: ${{ inputs.mention }}
+    MERGED_LABEL: ${{ inputs.mergedLabel }}
+    RELEASED_LABEL: ${{ inputs.releasedLabel }}
