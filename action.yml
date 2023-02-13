@@ -1,0 +1,19 @@
+name: 'release confirmation action'
+description: 'This action is used to detect releases from Github pull request labels.'
+inputs:
+  github-token:
+    description: 'GITHUB_TOKEN'
+    default: ${{ github.token }}
+  slack-api-token:
+    description: 'SLACK_API_TOKEN'
+  workflow-file:
+    description: 'Workflow file path'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.workflow-file }}
+  env:
+    GITHUB_TOKEN: ${{ inputs.github-token }}
+    SLACK_API_TOKEN: ${{ inputs.slack-api-token }}
