@@ -4,15 +4,13 @@ class GithubClient
 {
     protected $curl;
     protected $url;
-    protected $queryParams;
     protected $isDebug = false;
     protected $repo;
     protected $number;
 
-    public function __construct($baseUrl, $queryParams = [])
+    public function __construct($baseUrl)
     {
         $this->url = $baseUrl;
-        $this->queryParams = $queryParams;
         $this->curl = curl_init();
         $this->setAuth();
     }
@@ -42,10 +40,10 @@ class GithubClient
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
     }
 
-    protected function setUrl($uri)
+    protected function setUrl($uri, $options = [])
     {
         $url = $this->url . "/{$this->repo}/{$uri}";
-        return empty($this->queryParams) ? $url : $url . '?' . http_build_query($this->queryParams);
+        return empty($options) ? $url : $url . '?' . http_build_query($options);
     }
 
     public function addLabels($label)
@@ -88,8 +86,32 @@ class GithubClient
         curl_close($this->curl);
     }
 
-    public function fetchClosedPulls()
+    public function fetchUnreleasedPulls($options, $mergedLabel, $releasedLabel)
     {
+        $url = $this->setUrl("pulls", $options);
+        if ($this->isDebug) {
+            var_dump(['url' => $url]);
+        }
+        curl_setopt($this->curl, CURLOPT_URL, $url);
+        $res = curl_exec($this->curl);
+        if ($this->isDebug) {
+            var_dump($res);
+        }
+        var_dump(curl_errno($this->curl));
+        if (curl_errno($this->curl)) {
+            die('Error:' . curl_error($this->curl));
+        }
+        curl_close($this->curl);
 
+        $pulls = json_decode($res, true);
+        $notifies = [];
+        foreach ($pulls as $pull) {
+            foreach ($pull['labels'] as $label) {
+                if ($label['name'] === $mergedLabel) {
+                    $notifies[] = $pull;
+                }
+            }
+        }
+        return $notifies;
     }
 }
