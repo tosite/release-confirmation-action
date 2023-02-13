@@ -28,10 +28,10 @@ inputs:
     default: 'action-released'
   notifySubject:
     description: ''
-    default: ''
+    default: 'List of pull requests that have not been released.'
   mention:
     description: ''
-    default: ''
+    default: 'NULL'
 runs:
   using: 'docker'
   image: 'Dockerfile'
