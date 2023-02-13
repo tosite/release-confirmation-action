@@ -1,6 +1,10 @@
 <?php
 
-echo "add label.";
+require_once 'client.php';
+$isDebug = (int)getenv('DEBUG_MODE') === 1;
+
+echo "==== add label. ====";
+
 $keys = [
     'endpoint',
     'action',
@@ -13,11 +17,15 @@ $keys = [
     'released_color',
 ];
 $params = array_combine($keys, $argv);
-if ((int)getenv('DEBUG_MODE') === 1) {
+$cli = new GithubClient($params['base_url']);
+if ($isDebug) {
     var_dump([
-        'params' => $params,
+        'params'       => $params,
         'GITHUB_TOKEN' => getenv('GITHUB_TOKEN'),
     ]);
+    $cli->setDebugMode();
 }
-$cli = new GithubClient($params['base_url']);
+
+echo "==== post api.  ====";
 $cli->addLabels($params['merged_label'], $params['merged_color']);
+echo "==== finish.    ====";

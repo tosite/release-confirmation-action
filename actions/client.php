@@ -5,11 +5,17 @@ class GithubClient
     protected $curl;
     protected $url;
     protected $queryParams;
+    protected $isDebug = false;
 
     public function __construct($baseUrl, $queryParams = [])
     {
         $this->url = $baseUrl;
         $this->queryParams = $queryParams;
+    }
+
+    public function setDebugMode()
+    {
+        $this->isDebug = true;
     }
 
     public function setAuth()
@@ -30,6 +36,9 @@ class GithubClient
     public function addLabels($name, $color)
     {
         $this->setAuth();
+        if ($this->isDebug) {
+            var_dump(['url' => $this->setUrl()]);
+        }
         $params = [
             'name'  => $name,
             'color' => $color,
