@@ -60,7 +60,10 @@ class GithubClient
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_POST, 1);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));
-        curl_exec($this->curl);
+        $res = curl_exec($this->curl);
+        if ($this->isDebug) {
+            var_dump($res);
+        }
         if (curl_errno($this->curl)) {
             die('Error:' . curl_error($this->curl));
         }
