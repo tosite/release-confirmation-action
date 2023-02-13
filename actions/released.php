@@ -3,7 +3,7 @@
 require_once 'client.php';
 $isDebug = (int)getenv('DEBUG_MODE') === 1;
 
-echo "==== remove label. ====\n";
+echo "==== start.        ====\n";
 
 $keys = [
     'endpoint',
@@ -26,6 +26,7 @@ if ($isDebug) {
         'GITHUB_TOKEN' => getenv('GITHUB_TOKEN'),
     ]);
     $cli->setDebugMode();
+    $cli2->setDebugMode();
 }
 echo "==== remove label. ====\n";
 $cli->removeLabel($params['merged_label']);
