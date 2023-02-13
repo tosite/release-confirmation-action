@@ -10,8 +10,11 @@ inputs:
     description: 'after released label'
     default: 'action-released'
   repo:
-    description: 'hoge'
+    description: 'owner/repo'
     default: "${{ github.event.repository.name }}"
+  number:
+    description: 'pull_request number'
+    default: "${{ github.event.pull_request.number }}"
 runs:
   using: 'docker'
   image: 'Dockerfile'
