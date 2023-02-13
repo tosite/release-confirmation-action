@@ -3,7 +3,6 @@
 echo "add label.";
 $keys = [
     'endpoint',
-    'github_token',
     'action',
     'base_url',
     'repo',
@@ -14,6 +13,6 @@ $keys = [
     'released_color',
 ];
 $params = array_combine($keys, $argv);
-var_dump($params, $params['github_token']);
+var_dump($params, getenv('GITHUB_TOKEN'));
 //$cli = new GithubClient($params['base_url']);
 //$cli->addLabels($params['merged_label'], $params['merged_color']);
