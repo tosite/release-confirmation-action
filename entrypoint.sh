@@ -1,3 +1,3 @@
 #!/bin/sh -l
 
-php "/actions/$@.php"
+php "/actions/$1.php $2"
