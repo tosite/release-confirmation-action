@@ -13,7 +13,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.workflow-file }}
+    - ${{ inputs.action }}
   env:
     GITHUB_TOKEN: ${{ inputs.github-token }}
     SLACK_API_TOKEN: ${{ inputs.slack-api-token }}
