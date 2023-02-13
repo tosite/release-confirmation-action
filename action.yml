@@ -3,26 +3,35 @@ description: 'This action is used to detect releases from Github pull request la
 inputs:
   action:
     description: 'entrypoint(merged|released|notify)'
+  baseUrl:
+    description: ''
+    default: "https://api.github.com/repos"
+  repo:
+    description: 'owner/repo'
+    default: "${{ github.repository }}"
+  number:
+    description: 'pull_request number'
+    default: "${{ github.event.pull_request.number }}"
   mergedLabel:
     description: 'after merged label'
     default: 'action-merged'
   releasedLabel:
     description: 'after released label'
     default: 'action-released'
-  repo:
-    description: 'owner/repo'
-    default: "${{ github.event.repository.name }}"
-  number:
-    description: 'pull_request number'
-    default: "${{ github.event.pull_request.number }}"
+  labelColor:
+    description: 'label color(default: #ffcc99)'
+    default: 'action-released'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.action }}
-    - ${{ inputs.mergedLabel }}
+    - ${{ inputs.baseUrl }}
     - ${{ inputs.repo }}
     - ${{ inputs.number }}
+    - ${{ inputs.mergedLabel }}
+    - ${{ inputs.releasedLabel }}
+    - ${{ inputs.labelColor }}
   env:
     GITHUB_TOKEN: ${{ inputs.github-token }}
     SLACK_API_TOKEN: ${{ inputs.slack-api-token }}
