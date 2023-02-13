@@ -11,6 +11,7 @@ inputs:
     default: 'action-released'
   repo:
     description: 'hoge'
+    default: "${{ github.event.repository.name }}"
 runs:
   using: 'docker'
   image: 'Dockerfile'
