@@ -2,11 +2,8 @@
 
 class SlackClient
 {
-    protected $curl;
     protected $url;
     protected $isDebug = false;
-    protected $repo;
-    protected $number;
 
     public function __construct()
     {
