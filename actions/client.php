@@ -94,9 +94,6 @@ class GithubClient
         }
         curl_setopt($this->curl, CURLOPT_URL, $url);
         $res = curl_exec($this->curl);
-        if ($this->isDebug) {
-            var_dump($res);
-        }
         var_dump(curl_errno($this->curl));
         if (curl_errno($this->curl)) {
             die('Error:' . curl_error($this->curl));
@@ -106,6 +103,9 @@ class GithubClient
         $pulls = json_decode($res, true);
         $notifies = [];
         foreach ($pulls as $pull) {
+            if ($this->isDebug) {
+                var_dump("{$pull['html_url']} - {$pull['title']}");
+            }
             foreach ($pull['labels'] as $label) {
                 if ($label['name'] === $mergedLabel) {
                     $notifies[] = $pull;

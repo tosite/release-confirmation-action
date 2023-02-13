@@ -4,7 +4,7 @@ inputs:
   githubToken:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
-  slackApiToken:
+  slackWebhook:
     description: 'SLACK_API_TOKEN'
   isDebug:
     description: 'debug mode(=1)'
@@ -26,6 +26,12 @@ inputs:
   releasedLabel:
     description: 'after released label'
     default: 'action-released'
+  notifySubject:
+    description: ''
+    default: ''
+  mention:
+    description: ''
+    default: ''
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -36,7 +42,9 @@ runs:
     - ${{ inputs.number }}
     - ${{ inputs.mergedLabel }}
     - ${{ inputs.releasedLabel }}
+    - ${{ inputs.notifySubject }}
+    - ${{ inputs.mention }}
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
-    SLACK_API_TOKEN: ${{ inputs.slackApiToken }}
+    SLACK_WEBHOOK: ${{ inputs.slackWebhook }}
     DEBUG_MODE: ${{ inputs.isDebug }}

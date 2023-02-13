@@ -1,20 +1,11 @@
 <?php
 
 require_once 'client.php';
-$isDebug = (int)getenv('DEBUG_MODE') === 1;
+require_once 'slack.php';
 
 echo "==== start.        ====\n";
+include 'parse_params.php';
 
-$keys = [
-    'endpoint',
-    'action',
-    'base_url',
-    'repo',
-    'number',
-    'merged_label',
-    'released_label',
-];
-$params = array_combine($keys, $argv);
 $cli = new GithubClient($params['base_url']);
 $cli->setRepo($params['repo']);
 $cli->setNumber($params['number']);
@@ -33,7 +24,13 @@ if ($isDebug) {
     $cli->setDebugMode();
 }
 
-echo "==== fetch pulls. ====\n";
+echo "==== fetch pulls.  ====\n";
 $res = $cli->fetchUnreleasedPulls($queryParams, $params['merged_label'], $params['released_label']);
 var_dump($res);
+echo "==== slack post.   ====\n";
+$slack = new SlackClient();
+if ($isDebug) {
+    $slack->debugMode();
+}
+$slack->send($params['subject'], $res);
 echo "==== finish.       ====\n";

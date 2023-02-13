@@ -1,20 +1,10 @@
 <?php
 
 require_once 'client.php';
-$isDebug = (int)getenv('DEBUG_MODE') === 1;
 
 echo "==== start.        ====\n";
+include 'parse_params.php';
 
-$keys = [
-    'endpoint',
-    'action',
-    'base_url',
-    'repo',
-    'number',
-    'merged_label',
-    'released_label',
-];
-$params = array_combine($keys, $argv);
 $cli = new GithubClient($params['base_url']);
 $cli->setRepo($params['repo']);
 $cli->setNumber($params['number']);
