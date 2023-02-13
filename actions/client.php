@@ -13,6 +13,8 @@ class GithubClient
     {
         $this->url = $baseUrl;
         $this->queryParams = $queryParams;
+        $this->curl = curl_init();
+        $this->setAuth();
     }
 
     public function setRepo($repo)
@@ -32,8 +34,6 @@ class GithubClient
 
     public function setAuth()
     {
-        $this->curl = curl_init();
-        $this->setAuth();
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             "Authorization: token " . getenv('GITHUB_TOKEN'),
             "Content-Type: application/json",
