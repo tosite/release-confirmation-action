@@ -1,6 +1,9 @@
 name: 'release confirmation action'
 description: 'This action is used to detect releases from Github pull request labels.'
 inputs:
+  githubToken:
+    description: 'GITHUB_TOKEN'
+    default: ${{ github.token }}
   action:
     description: 'entrypoint(merged|released|notify)'
   baseUrl:
