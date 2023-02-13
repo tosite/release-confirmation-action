@@ -26,11 +26,11 @@ if ($isDebug) {
 
 echo "==== fetch pulls.  ====\n";
 $res = $cli->fetchUnreleasedPulls($queryParams, $params['merged_label'], $params['released_label']);
-var_dump($res);
+
 echo "==== slack post.   ====\n";
 $slack = new SlackClient();
 if ($isDebug) {
     $slack->debugMode();
 }
-$slack->send($params['subject'], $res);
+$slack->send($res);
 echo "==== finish.       ====\n";
