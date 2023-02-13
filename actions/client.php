@@ -5,19 +5,18 @@ class GithubClient
     protected $curl;
     protected $url;
     protected $queryParams;
-    protected $token;
 
-    public function __construct($baseUrl, $token, $queryParams = [])
+    public function __construct($baseUrl, $queryParams = [])
     {
-        $this->curl = curl_init();
         $this->url = $baseUrl;
         $this->queryParams = $queryParams;
     }
 
     public function setAuth()
     {
+        $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
-            "Authorization: token {$this->token}",
+            "Authorization: token " . getenv('GITHUB_TOKEN'),
             "Content-Type: application/json"
         ]);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);

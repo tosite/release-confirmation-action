@@ -6,6 +6,9 @@ inputs:
     default: ${{ github.token }}
   slackApiToken:
     description: 'SLACK_API_TOKEN'
+  isDebug:
+    description: 'debug mode(=1)'
+    default: '0'
   action:
     description: 'entrypoint(merged|released|notify)'
   baseUrl:
@@ -44,3 +47,4 @@ runs:
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
     SLACK_API_TOKEN: ${{ inputs.slackApiToken }}
+    DEBUG_MODE: ${{ inputs.isDebug }}

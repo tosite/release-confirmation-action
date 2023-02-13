@@ -13,6 +13,11 @@ $keys = [
     'released_color',
 ];
 $params = array_combine($keys, $argv);
-var_dump($params, getenv('GITHUB_TOKEN'));
-//$cli = new GithubClient($params['base_url']);
-//$cli->addLabels($params['merged_label'], $params['merged_color']);
+if ((int)getenv('DEBUG_MODE') === 1) {
+    var_dump([
+        'params' => $params,
+        'GITHUB_TOKEN' => getenv('GITHUB_TOKEN'),
+    ]);
+}
+$cli = new GithubClient($params['base_url']);
+$cli->addLabels($params['merged_label'], $params['merged_color']);
