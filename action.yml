@@ -5,7 +5,7 @@ inputs:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
   slackWebhook:
-    description: 'SLACK_API_TOKEN'
+    description: 'SLACK_WEBHOOK'
   isDebug:
     description: 'debug mode(=1)'
     default: '0'

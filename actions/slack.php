@@ -42,7 +42,7 @@ class SlackClient
         if ($mention !== 'NULL') {
             $message .= "$mention\n";
         }
-        $message .= "**{$subject}**\n";
+        $message .= "*{$subject}*\n\n";
         foreach ($pulls as $pull) {
             $message .= "- <{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
         }
