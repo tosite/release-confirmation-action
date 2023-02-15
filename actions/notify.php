@@ -3,7 +3,7 @@
 require_once 'GithubClient.php';
 require_once 'SlackClient.php';
 
-echo "==== start.        ====\n";
+echo "==> start notify action.\n";
 $params = [];
 $isDebug = false;
 include 'parse_params.php';
@@ -13,7 +13,7 @@ $cli->setRepo($params['repo']);
 $cli->setNumber($params['number']);
 $isShowReleasedPulls = (int)getenv('SHOW_RELEASED_PULLS') === 1;
 
-echo "==== fetch pulls.  ====\n";
+echo "==> fetch pull requests.\n";
 $labels = $isShowReleasedPulls ? "{$params['merged_label']},{$params['released_label']}" : $params['merged_label'];
 $queryParams = [
     'state'     => 'closed',
@@ -34,7 +34,7 @@ if ($isDebug) {
 $cli->fetchPulls($queryParams);
 $unreleasedPulls = $cli->filteringUnreleasedPulls($params['merged_label']);
 
-echo "==== slack post.   ====\n";
+echo "==> post to Slack.\n";
 $slack = new SlackClient();
 if ($isDebug) {
     $slack->debugMode();
@@ -48,4 +48,4 @@ if ($isShowReleasedPulls) {
     $slack->setReleasedParams(getenv('RELEASED_PULLS_SUBJECT'), $releasedPulls);
 }
 $slack->send();
-echo "==== finish.       ====\n";
+echo "==> finish notify action.\n";

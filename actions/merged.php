@@ -2,7 +2,7 @@
 
 require_once 'GithubClient.php';
 
-echo "==== start.        ====\n";
+echo "==> start merged action.\n";
 $params = [];
 $isDebug = false;
 include 'parse_params.php';
@@ -18,6 +18,6 @@ if ($isDebug) {
     $cli->setDebugMode();
 }
 
-echo "==== add label.    ====\n";
+echo "==> add `${$params['merged_label']}` label.\n";
 $cli->addLabels($params['merged_label']);
-echo "==== finish.       ====\n";
+echo "==> finish merged action.\n";
