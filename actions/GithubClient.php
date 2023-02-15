@@ -2,7 +2,6 @@
 
 class GithubClient
 {
-    protected $curl;
     protected $url;
     protected $isDebug = false;
     protected $repo;
@@ -12,8 +11,6 @@ class GithubClient
     public function __construct($baseUrl)
     {
         $this->url = $baseUrl;
-        $this->curl = curl_init();
-        $this->setAuth();
     }
 
     public function setRepo($repo)
@@ -31,14 +28,14 @@ class GithubClient
         $this->isDebug = true;
     }
 
-    public function setAuth()
+    public function setAuth($curl)
     {
-        curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Authorization: token " . getenv('GITHUB_TOKEN'),
             "Content-Type: application/json",
             "User-Agent: release-confirmation-action",
         ]);
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     }
 
     protected function setUrl($uri, $options = [])
@@ -49,57 +46,63 @@ class GithubClient
 
     public function addLabels($label)
     {
+        $curl = curl_init();
+        $this->setAuth($curl);
         $url = $this->setUrl("issues/{$this->number}/labels");
         if ($this->isDebug) {
             var_dump(['url' => $url]);
         }
         $params = [$label];
-        curl_setopt($this->curl, CURLOPT_URL, $url);
-        curl_setopt($this->curl, CURLOPT_POST, 1);
-        curl_setopt($this->curl, CURLOPT_POSTFIELDS, json_encode($params));
-        $res = curl_exec($this->curl);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
+        $res = curl_exec($curl);
         if ($this->isDebug) {
             var_dump($res);
         }
-        var_dump(curl_errno($this->curl));
-        if (curl_errno($this->curl)) {
-            die('Error:' . curl_error($this->curl));
+        var_dump(curl_errno($curl));
+        if (curl_errno($curl)) {
+            die('Error:' . curl_error($curl));
         }
-        curl_close($this->curl);
+        curl_close($curl);
     }
 
     public function removeLabel($label)
     {
+        $curl = curl_init();
+        $this->setAuth($curl);
         $url = $this->setUrl("issues/{$this->number}/labels/{$label}");
         if ($this->isDebug) {
             var_dump(['url' => $url]);
         }
-        curl_setopt($this->curl, CURLOPT_URL, $url);
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        $res = curl_exec($this->curl);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $res = curl_exec($curl);
         if ($this->isDebug) {
             var_dump($res);
         }
-        if (curl_errno($this->curl)) {
-            die('Error:' . curl_error($this->curl));
+        if (curl_errno($curl)) {
+            die('Error:' . curl_error($curl));
         }
-        var_dump(curl_errno($this->curl));
-        curl_close($this->curl);
+        var_dump(curl_errno($curl));
+        curl_close($curl);
     }
 
     public function fetchPulls($options)
     {
+        $curl = curl_init();
+        $this->setAuth($curl);
         $url = $this->setUrl("pulls", $options);
         if ($this->isDebug) {
             var_dump(['url' => $url]);
         }
-        curl_setopt($this->curl, CURLOPT_URL, $url);
-        $res = curl_exec($this->curl);
-        var_dump(curl_errno($this->curl));
-        if (curl_errno($this->curl)) {
-            die('Error:' . curl_error($this->curl));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $res = curl_exec($curl);
+        var_dump(curl_errno($curl));
+        if (curl_errno($curl)) {
+            die('Error:' . curl_error($curl));
         }
-        curl_close($this->curl);
+        curl_close($curl);
 
         $this->pulls = json_decode($res, true);
     }
