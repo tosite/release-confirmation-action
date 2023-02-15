@@ -6,7 +6,6 @@ class SlackClient
     protected $isDebug = false;
     protected $webhookUrl;
     protected $mention;
-    protected $channel;
     protected $subject;
     protected $attachments = [];
 
@@ -26,12 +25,6 @@ class SlackClient
     public function setMention($mention)
     {
         $this->mention = $mention;
-        return $this;
-    }
-
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
         return $this;
     }
 
@@ -91,7 +84,6 @@ class SlackClient
     {
         $mention = !empty($this->mention) ? "{$this->mention} " : '';
         $params = [
-            'channel'     => $this->channel,
             'text'        => "{$mention}*{$this->subject}*",
             'attachments' => $this->attachments,
         ];

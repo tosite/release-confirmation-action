@@ -95,7 +95,6 @@ jobs:
 |key| values                            |required|description|
 | --- |-----------------------------------| --- | --- |
 | slackWebhook | `https://hooks.slack.com/services/xxxx/xxxx/xxxxx`                              | ⭕ | https://slack.com/services/new/incoming-webhook |
-| channel | `#random`                         | ⭕ | Slack notification destination channel. |
 | notifySubject | `string`                          | optional | Title to notify Slack. |
 | unreleasedPullsSubject | `string`                          | optional | Title to unreleased. |
 | mention | `<@USER_ID>, <!here>, <!channel>` | optional | Specify the user to mentions. |
