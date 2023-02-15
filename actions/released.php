@@ -3,6 +3,8 @@
 require_once 'client.php';
 
 echo "==== start.        ====\n";
+$params = [];
+$isDebug = false;
 include 'parse_params.php';
 
 $cli = new GithubClient($params['base_url']);
