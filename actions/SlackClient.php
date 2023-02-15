@@ -75,14 +75,15 @@ class SlackClient
             return $this;
         }
         $this->attachments = array_merge(
+            $this->attachments,
             [
                 [
                     'title' => $title,
                     'text'  => $this->buildMessage($pulls),
                     'color' => '#a4c520',
                 ]
-            ],
-            $this->attachments);
+            ]
+        );
         return $this;
     }
 

@@ -42,7 +42,7 @@ if ($isDebug) {
 $slack->setSubject(getenv('SUBJECT'))
     ->setMention(getenv('MENTION'))
     ->setChannel(getenv('CHANNEL'))
-    ->setUnreleasedParams('UNRELEASED_PULLS_SUBJECT', $unreleasedPulls);
+    ->setUnreleasedParams(getenv('UNRELEASED_PULLS_SUBJECT'), $unreleasedPulls);
 if ($isShowReleasedPulls) {
     $releasedPulls = $cli->filteringReleasedPulls($params['released_label'], getenv('RELEASED_DAYS'));
     $slack->setReleasedParams(getenv('RELEASED_PULLS_SUBJECT'), $releasedPulls);
