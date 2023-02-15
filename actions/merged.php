@@ -1,6 +1,6 @@
 <?php
 
-require_once 'client.php';
+require_once 'GithubClient.php';
 
 echo "==== start.        ====\n";
 $params = [];

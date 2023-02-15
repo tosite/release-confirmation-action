@@ -49,6 +49,9 @@ inputs:
   releasedPullsSubject:
     description: 'Slack Section Subject.'
     default: 'Here is a list of recently released pull requests.'
+  releasedDays:
+    description: 'How many days ago was it released?'
+    default: '5'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -69,3 +72,4 @@ runs:
     SHOW_RELEASED_PULLS: ${{ inputs.showReleasedPulls }}
     UNRELEASED_PULLS_SUBJECT: ${{ inputs.unreleasedPullsSubject }}
     RELEASED_PULLS_SUBJECT: ${{ inputs.releasedPullsSubject }}
+    RELEASED_DAYS: ${{ inputs.releasedDays }}

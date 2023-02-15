@@ -7,6 +7,7 @@ class GithubClient
     protected $isDebug = false;
     protected $repo;
     protected $number;
+    protected $pulls;
 
     public function __construct($baseUrl)
     {
@@ -86,7 +87,7 @@ class GithubClient
         curl_close($this->curl);
     }
 
-    public function fetchUnreleasedPulls($options, $mergedLabel, $releasedLabel)
+    public function fetchPulls($options)
     {
         $url = $this->setUrl("pulls", $options);
         if ($this->isDebug) {
@@ -100,9 +101,13 @@ class GithubClient
         }
         curl_close($this->curl);
 
-        $pulls = json_decode($res, true);
+        $this->pulls = json_decode($res, true);
+    }
+
+    public function filteringUnreleasedPulls($mergedLabel)
+    {
         $notifies = [];
-        foreach ($pulls as $pull) {
+        foreach ($this->pulls as $pull) {
             if ($this->isDebug) {
                 var_dump("{$pull['html_url']} - {$pull['title']}");
             }
@@ -113,5 +118,26 @@ class GithubClient
             }
         }
         return $notifies;
+    }
+
+    public function filteringReleasedPulls($releasedLabel, $term)
+    {
+        $notifies = [];
+        foreach ($this->pulls as $pull) {
+            if ($this->isDebug) {
+                var_dump("{$pull['html_url']} - {$pull['title']}");
+            }
+            $mergedAt = strtotime($pull['merged_at']);
+            if (time() - $mergedAt >= $term * 24 * 60 * 60) {
+                continue;
+            }
+            foreach ($pull['labels'] as $label) {
+                if ($label['name'] === $releasedLabel) {
+                    $notifies[] = $pull;
+                }
+            }
+        }
+        return $notifies;
+
     }
 }
