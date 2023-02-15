@@ -1,16 +1,19 @@
 name: 'release confirmation action'
 description: 'This action is used to detect releases from Github pull request labels.'
 inputs:
+  # require params(common)
   githubToken:
     description: 'GITHUB_TOKEN'
     default: ${{ github.token }}
-  slackWebhook:
-    description: 'SLACK_WEBHOOK'
-  isDebug:
-    description: 'debug mode(disable:0, enable:1)'
-    default: '0'
   action:
     description: 'entrypoint(merged|released|notify)'
+  mergedLabel:
+    description: 'After merged label'
+    default: 'action-merged'
+  releasedLabel:
+    description: 'After released label'
+    default: 'action-released'
+  # require params(action = merged, released)
   baseUrl:
     description: 'Base URL for GitHub API'
     default: "https://api.github.com/repos"
@@ -20,18 +23,19 @@ inputs:
   number:
     description: 'pull_request number'
     default: "${{ github.event.pull_request.number }}"
-  mergedLabel:
-    description: 'After merged label'
-    default: 'action-merged'
-  releasedLabel:
-    description: 'After released label'
-    default: 'action-released'
+  # require params(action = notify)
+  slackWebhook:
+    description: 'SLACK_WEBHOOK'
   notifySubject:
     description: 'Title to notify Slack'
     default: 'List of pull requests that have not been released.'
   mention:
     description: 'Set slack user_id(e.g. <@USER_ID>|<!here>|<!channel>)'
     default: ''
+  # optional params
+  isDebug:
+    description: 'debug mode(disable:0, enable:1)'
+    default: '0'
 runs:
   using: 'docker'
   image: 'Dockerfile'
