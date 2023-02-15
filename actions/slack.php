@@ -4,9 +4,18 @@ class SlackClient
 {
     protected $url;
     protected $isDebug = false;
+    protected $webhookUrl;
+    protected $mention;
+    protected $channel;
+    protected $subject;
+    protected $attachments = [];
 
     public function __construct()
     {
+        $this->webhookUrl = getenv('SLACK_WEBHOOK');
+        if (empty($this->webhookUrl)) {
+            throw new \Exception('undefined SLACK_WEBHOOK env.');
+        }
     }
 
     public function debugMode()
@@ -14,36 +23,95 @@ class SlackClient
         $this->isDebug = true;
     }
 
-    public function send($subject, $pulls, $mention)
+    public function setMention($mention)
     {
-        $data = "payload=" . json_encode(["text" => $this->buildMessage($subject, $pulls, $mention)]);
-        if ($this->isDebug) {
-            var_dump(['data' => $data, 'webhook' => getenv('SLACK_WEBHOOK')]);
-        }
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, getenv('SLACK_WEBHOOK'));
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        if ($this->isDebug) {
-            var_dump($result);
-        }
-        curl_close($ch);
+        $this->mention = $mention;
+        return $this;
     }
 
-    protected function buildMessage($subject, $pulls, $mention)
+    public function setChannel($channel)
+    {
+        $this->channel = $channel;
+        return $this;
+    }
+
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+        return $this;
+    }
+
+    protected function buildMessage($pulls)
     {
         $message = '';
-        if ($mention !== 'NULL') {
-            $message .= "$mention ";
-        }
-        $message .= "*{$subject}*\n\n";
         foreach ($pulls as $pull) {
             $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
         }
         return $message;
+    }
+
+    public function setUnreleasedParams($title, $pulls)
+    {
+        $message = $this->buildMessage($pulls);
+        if (empty($message)) {
+            return $this;
+        }
+        $this->attachments = array_merge(
+            [
+                [
+                    'title' => $title,
+                    'text'  => $this->buildMessage($pulls),
+                    'color' => '#bf1e56',
+                ]
+            ],
+            $this->attachments);
+        return $this;
+    }
+
+    public function setReleasedParams($title, $pulls)
+    {
+        $message = $this->buildMessage($pulls);
+        if (empty($message)) {
+            return $this;
+        }
+        $this->attachments = array_merge(
+            [
+                [
+                    'title' => $title,
+                    'text'  => $this->buildMessage($pulls),
+                    'color' => '#a4c520',
+                ]
+            ],
+            $this->attachments);
+        return $this;
+    }
+
+    protected function buildAttachmentMessage()
+    {
+        $mention = !empty($this->mention) ? "{$this->mention} " : '';
+        $params = [
+            'channel'     => $this->channel,
+            'text'        => "{$mention}*{$this->subject}*",
+            'attachments' => $this->attachments,
+        ];
+        if ($this->isDebug) {
+            var_dump($params);
+        }
+        return $params;
+    }
+
+    public function send()
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $this->webhookUrl);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($this->buildAttachmentMessage()));
+        $result = curl_exec($curl);
+        if ($this->isDebug) {
+            var_dump($result);
+        }
+        curl_close($curl);
     }
 }

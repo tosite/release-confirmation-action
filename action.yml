@@ -13,6 +13,10 @@ inputs:
   releasedLabel:
     description: 'After released label'
     default: 'action-released'
+  # optional params(common)
+  isDebug:
+    description: 'debug mode(disable:0, enable:1)'
+    default: '0'
   # require params(action = merged, released)
   baseUrl:
     description: 'Base URL for GitHub API'
@@ -29,13 +33,22 @@ inputs:
   notifySubject:
     description: 'Title to notify Slack'
     default: 'List of pull requests that have not been released.'
+  channel:
+    description: 'Set slack channel(e.g. #random)'
+    default: '#random'
+  unreleasedPullsSubject:
+    description: 'Slack Section Subject.'
+    default: 'There are pull requests that have not been released.'
+  # optional params(action = notify)
   mention:
     description: 'Set slack user_id(e.g. <@USER_ID>|<!here>|<!channel>)'
     default: ''
-  # optional params
-  isDebug:
-    description: 'debug mode(disable:0, enable:1)'
+  showReleasedPulls:
+    description: 'notify released pulls(disable:0, enable:1)'
     default: '0'
+  releasedPullsSubject:
+    description: 'Slack Section Subject.'
+    default: 'Here is a list of recently released pull requests.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -50,5 +63,9 @@ runs:
     DEBUG_MODE: ${{ inputs.isDebug }}
     SUBJECT: ${{ inputs.notifySubject }}
     MENTION: ${{ inputs.mention }}
+    CHANNEL: ${{ inputs.channel }}
     MERGED_LABEL: ${{ inputs.mergedLabel }}
     RELEASED_LABEL: ${{ inputs.releasedLabel }}
+    SHOW_RELEASED_PULLS: ${{ inputs.showReleasedPulls }}
+    UNRELEASED_PULLS_SUBJECT: ${{ inputs.unreleasedPullsSubject }}
+    RELEASED_PULLS_SUBJECT: ${{ inputs.releasedPullsSubject }}

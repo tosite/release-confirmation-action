@@ -27,12 +27,19 @@ if ($isDebug) {
 }
 
 echo "==== fetch pulls.  ====\n";
-$res = $cli->fetchUnreleasedPulls($queryParams, $params['merged_label'], $params['released_label']);
+$unreleasedPulls = $cli->fetchUnreleasedPulls($queryParams, $params['merged_label'], $params['released_label']);
 
 echo "==== slack post.   ====\n";
 $slack = new SlackClient();
 if ($isDebug) {
     $slack->debugMode();
 }
-$slack->send($params['slack_subject'], $res, $params['mention']);
+$slack->setSubject(getenv('SUBJECT'))
+    ->setMention(getenv('MENTION'))
+    ->setChannel(getenv('CHANNEL'))
+    ->setUnreleasedParams('UNRELEASED_PULLS_SUBJECT', $unreleasedPulls);
+if (getenv('SHOW_RELEASED_PULLS')) {
+    $slack->setReleasedParams(getenv('RELEASED_PULLS_SUBJECT'), []);
+}
+$slack->send();
 echo "==== finish.       ====\n";
