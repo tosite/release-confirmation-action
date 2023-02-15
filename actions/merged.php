@@ -18,6 +18,6 @@ if ($isDebug) {
     $cli->setDebugMode();
 }
 
-echo "==> add `${$params['merged_label']}` label.\n";
+echo "==> add `{$params['merged_label']}` label.\n";
 $cli->addLabels($params['merged_label']);
 echo "==> finish merged action.\n";
