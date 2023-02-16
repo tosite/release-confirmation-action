@@ -43,7 +43,7 @@ class SlackClient
         return $message;
     }
 
-    public function setUnreleasedParams($title, $repoPulls)
+    protected function buildAttachmentParams($repoPulls, $title, $color)
     {
         $message = '';
         if ($this->isDebug) {
@@ -51,6 +51,9 @@ class SlackClient
             var_dump($repoPulls);
         }
         foreach ($repoPulls as $repo => $pulls) {
+            if (empty($pulls)) {
+                continue;
+            }
             $message .= $this->buildMessage($repo, $pulls);
         }
         if (empty($message)) {
@@ -67,29 +70,14 @@ class SlackClient
             $this->attachments);
     }
 
+    public function setUnreleasedParams($title, $repoPulls)
+    {
+        $this->buildAttachmentParams($repoPulls, ":warning:{$title}", '#bf1e56');
+    }
+
     public function setReleasedParams($title, $repoPulls)
     {
-        $message = '';
-        if ($this->isDebug) {
-            echo "[DEBUG]show repositories:\n";
-            var_dump($repoPulls);
-        }
-        foreach ($repoPulls as $repo => $pulls) {
-            $message .= $this->buildMessage($repo, $pulls);
-        }
-        if (empty($message)) {
-            return;
-        }
-        $this->attachments = array_merge(
-            $this->attachments,
-            [
-                [
-                    'title' => ":white_check_mark:{$title}",
-                    'text'  => $message,
-                    'color' => '#a4c520',
-                ]
-            ]
-        );
+        $this->buildAttachmentParams($repoPulls, ":white_check_mark:{$title}", '#a4c520');
     }
 
     protected function buildAttachmentMessage()
