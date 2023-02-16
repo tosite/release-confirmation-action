@@ -36,7 +36,7 @@ class SlackClient
 
     protected function buildMessage($repo, $pulls)
     {
-        $message = "*:open_file_folder:Repository: {$repo}*";
+        $message = "*:open_file_folder:Repository: {$repo}*\n";
         foreach ($pulls as $pull) {
             $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']}\n";
         }
@@ -47,10 +47,11 @@ class SlackClient
     {
         $message = '';
         if ($this->isDebug) {
+            echo "[DEBUG]show repositories:\n";
             var_dump($repoPulls);
         }
         foreach ($repoPulls as $repo => $pulls) {
-            $message .= $this->buildMessage($repo, $repoPulls);
+            $message .= $this->buildMessage($repo, $pulls);
         }
         if (empty($message)) {
             return;
@@ -58,7 +59,7 @@ class SlackClient
         $this->attachments = array_merge(
             [
                 [
-                    'title' => $title,
+                    'title' => ":warning:{$title}",
                     'text'  => $message,
                     'color' => '#bf1e56',
                 ]
@@ -70,10 +71,11 @@ class SlackClient
     {
         $message = '';
         if ($this->isDebug) {
+            echo "[DEBUG]show repositories:\n";
             var_dump($repoPulls);
         }
         foreach ($repoPulls as $repo => $pulls) {
-            $message .= $this->buildMessage($repo, $repoPulls);
+            $message .= $this->buildMessage($repo, $pulls);
         }
         if (empty($message)) {
             return;
@@ -82,7 +84,7 @@ class SlackClient
             $this->attachments,
             [
                 [
-                    'title' => $title,
+                    'title' => ":white_check_mark:{$title}",
                     'text'  => $message,
                     'color' => '#a4c520',
                 ]
