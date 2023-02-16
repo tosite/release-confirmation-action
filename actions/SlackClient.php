@@ -62,9 +62,9 @@ class SlackClient
         $this->attachments = array_merge(
             [
                 [
-                    'title' => ":warning:{$title}",
+                    'title' => $title,
                     'text'  => $message,
-                    'color' => '#bf1e56',
+                    'color' => $color,
                 ]
             ],
             $this->attachments);
