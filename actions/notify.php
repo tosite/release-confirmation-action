@@ -23,8 +23,7 @@ if ($isDebug) {
 echo "==> fetch pull requests.\n";
 foreach ($repos as $repo) {
     echo "==> repo: `{$repo}`.\n";
-    $cli->setRepo($params['repo']);
-    $cli->setNumber($params['number']);
+    $cli->setRepo($repo);
     $labels = $isShowReleasedPulls ? "{$params['merged_label']},{$params['released_label']}" : $params['merged_label'];
     $queryParams = [
         'state'     => 'closed',
