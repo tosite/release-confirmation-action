@@ -62,6 +62,7 @@ class GithubClient
             echo "[DEBUG]show response:\n";
             var_dump($res);
         }
+        echo "[INFO]curl result:\n";
         var_dump(curl_errno($curl));
         if (curl_errno($curl)) {
             die('Error:' . curl_error($curl));
@@ -88,6 +89,7 @@ class GithubClient
         if (curl_errno($curl)) {
             die('Error:' . curl_error($curl));
         }
+        echo "[INFO]curl result:\n";
         var_dump(curl_errno($curl));
         curl_close($curl);
     }
@@ -99,10 +101,11 @@ class GithubClient
         $url = $this->setUrl("pulls", $options);
         if ($this->isDebug) {
             echo "[DEBUG]show url:\n";
-            var_dump(['url' => $url]);
+            var_dump($url);
         }
         curl_setopt($curl, CURLOPT_URL, $url);
         $res = curl_exec($curl);
+        echo "[INFO]curl result:\n";
         var_dump(curl_errno($curl));
         if (curl_errno($curl)) {
             die('Error:' . curl_error($curl));
@@ -110,6 +113,7 @@ class GithubClient
         curl_close($curl);
 
         if ($this->isDebug) {
+            echo "[DEBUG]show response:\n";
             var_dump($res);
         }
         $this->pulls = json_decode($res, true);
