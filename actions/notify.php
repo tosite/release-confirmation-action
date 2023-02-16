@@ -8,7 +8,7 @@ $params = [];
 $isDebug = false;
 include 'parse_params.php';
 
-$repos = explode(',', getenv('TARGET_REPOSITORIES'));
+$repos = explode("\n", getenv('TARGET_REPOSITORIES'));
 $cli = new GithubClient($params['base_url']);
 $releasedPulls = [];
 $unreleasedPulls = [];

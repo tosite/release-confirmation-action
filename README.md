@@ -73,6 +73,9 @@ jobs:
                action: notify
                channel: '#random'
                showReleasedPulls: 1
+               TargetRepositories: |
+                  your/repoA
+                  your/repoB
                releasedDays: 5
                # Please save your Slack Webhook url to your GitHub secret.
                slackWebhook: ${{ secrets.SLACK_WEBHOOK }}
@@ -96,7 +99,7 @@ jobs:
 | --- |----------------------------------------------------| --- | -- |
 | slackWebhook | `https://hooks.slack.com/services/xxxx/xxxx/xxxxx` | ⭕ | https://slack.com/services/new/incoming-webhook |
 | notifySubject | `string`                                           | optional | Title to notify Slack. |
-| TargetRepositories | `your/repoA, your/repoB`                           | optional | These are the repositories that will be monitored.(default: repository where the action is running) |
+| TargetRepositories | `"your/repoA\nyour/repoB"`                           | optional | These are the repositories that will be monitored.(default: repository where the action is running) |
 | unreleasedPullsSubject | `string`                                           | optional | Title to unreleased. |
 | mention | `<@USER_ID>, <!here>, <!channel>`                  | optional | Specify the user to mentions. |
 | showReleasedPulls | `on=1, off=0`                                      | optional | Whether to be notified of released pull requests. |
