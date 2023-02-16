@@ -17,6 +17,7 @@ $isShowReleasedPulls = (int)getenv('SHOW_RELEASED_PULLS') === 1;
 if ($isDebug) {
     echo "[DEBUG]show repos:\n";
     var_dump($repos);
+    $cli->setDebugMode();
 }
 
 echo "==> fetch pull requests.\n";
@@ -40,7 +41,6 @@ foreach ($repos as $repo) {
             'show_released_pulls' => $isShowReleasedPulls,
             'GITHUB_TOKEN'        => getenv('GITHUB_TOKEN'),
         ]);
-        $cli->setDebugMode();
     }
     $cli->fetchPulls($queryParams);
     $unreleasedPulls[$repo] = $cli->filteringUnreleasedPulls($params['merged_label']);

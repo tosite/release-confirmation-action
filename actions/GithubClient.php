@@ -50,6 +50,7 @@ class GithubClient
         $this->setAuth($curl);
         $url = $this->setUrl("issues/{$this->number}/labels");
         if ($this->isDebug) {
+            echo "[DEBUG]show url:\n";
             var_dump(['url' => $url]);
         }
         $params = [$label];
@@ -74,12 +75,14 @@ class GithubClient
         $this->setAuth($curl);
         $url = $this->setUrl("issues/{$this->number}/labels/{$label}");
         if ($this->isDebug) {
+            echo "[DEBUG]show url:\n";
             var_dump(['url' => $url]);
         }
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
         $res = curl_exec($curl);
         if ($this->isDebug) {
+            echo "[DEBUG]show response:\n";
             var_dump($res);
         }
         if (curl_errno($curl)) {
@@ -119,7 +122,11 @@ class GithubClient
             }
             foreach ($pull['labels'] as $label) {
                 if ($label['name'] === $mergedLabel) {
-                    $notifies[] = $pull;
+                    $notifies[] = [
+                        'html_url' => $pull['html_url'],
+                        'title'    => $pull['title'],
+                        'user'     => $pull['user']['login'],
+                    ];
                 }
             }
         }
@@ -140,11 +147,14 @@ class GithubClient
             }
             foreach ($pull['labels'] as $label) {
                 if ($label['name'] === $releasedLabel) {
-                    $notifies[] = $pull;
+                    $notifies[] = [
+                        'html_url' => $pull['html_url'],
+                        'title'    => $pull['title'],
+                        'user'     => $pull['user']['login'],
+                    ];
                 }
             }
         }
         return $notifies;
-
     }
 }

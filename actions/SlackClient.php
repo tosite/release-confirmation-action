@@ -38,7 +38,7 @@ class SlackClient
     {
         $message = "*:open_file_folder:Repository: {$repo}*";
         foreach ($pulls as $pull) {
-            $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
+            $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']}\n";
         }
         return $message;
     }
@@ -46,6 +46,9 @@ class SlackClient
     public function setUnreleasedParams($title, $repoPulls)
     {
         $message = '';
+        if ($this->isDebug) {
+            var_dump($repoPulls);
+        }
         foreach ($repoPulls as $repo => $pulls) {
             $message .= $this->buildMessage($repo, $repoPulls);
         }
@@ -66,6 +69,9 @@ class SlackClient
     public function setReleasedParams($title, $repoPulls)
     {
         $message = '';
+        if ($this->isDebug) {
+            var_dump($repoPulls);
+        }
         foreach ($repoPulls as $repo => $pulls) {
             $message .= $this->buildMessage($repo, $repoPulls);
         }
