@@ -32,7 +32,7 @@ inputs:
     description: 'SLACK_WEBHOOK'
   notifySubject:
     description: 'Title to notify Slack'
-    default: 'List of pull requests that have not been released.'
+    default: ':bell:List of pull requests that have not been released.'
   unreleasedPullsSubject:
     description: 'Slack Section Subject.'
     default: 'There are pull requests that have not been released.'
