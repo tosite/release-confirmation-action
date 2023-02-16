@@ -96,6 +96,10 @@ class SlackClient
 
     public function send()
     {
+        if (empty($this->attachments)) {
+            echo "[INFO]nothing to be notified.";
+            return;
+        }
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $this->webhookUrl);
         curl_setopt($curl, CURLOPT_POST, 1);
