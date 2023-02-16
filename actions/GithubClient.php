@@ -116,7 +116,8 @@ class GithubClient
             echo "[DEBUG]show response:\n";
             var_dump($res);
         }
-        $this->pulls = json_decode($res, true);
+        $json = json_decode($res, true);
+        $this->pulls = $json['message'] !== 'Not Found' ? $json : [];
     }
 
     public function filteringUnreleasedPulls($mergedLabel)
