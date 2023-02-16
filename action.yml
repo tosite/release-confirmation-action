@@ -57,9 +57,6 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.action }}
-    - ${{ inputs.baseUrl }}
-    - ${{ inputs.repo }}
-    - ${{ inputs.number }}
   env:
     GITHUB_TOKEN: ${{ inputs.githubToken }}
     SLACK_WEBHOOK: ${{ inputs.slackWebhook }}
@@ -73,3 +70,6 @@ runs:
     RELEASED_PULLS_SUBJECT: ${{ inputs.releasedPullsSubject }}
     RELEASED_DAYS: ${{ inputs.releasedDays }}
     TARGET_REPOSITORIES: ${{ inputs.TargetRepositories }}
+    GITHUB_BASE_URL: ${{ inputs.baseUrl }}
+    GITHUB_REPO: ${{ inputs.repo }}
+    GITHUB_PULL_NUMBER: ${{ inputs.number }}

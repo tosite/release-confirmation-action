@@ -11,11 +11,6 @@ $cli = new GithubClient($params['base_url']);
 $cli->setRepo($params['repo']);
 $cli->setNumber($params['number']);
 if ($isDebug) {
-    echo "[DEBUG]show params\n";
-    var_dump([
-        'params'       => $params,
-        'GITHUB_TOKEN' => getenv('GITHUB_TOKEN'),
-    ]);
     $cli->setDebugMode();
 }
 

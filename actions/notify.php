@@ -35,10 +35,8 @@ foreach ($repos as $repo) {
     if ($isDebug) {
         echo "[DEBUG]show params:\n";
         var_dump([
-            'params'              => $params,
             'request_params'      => $queryParams,
             'show_released_pulls' => $isShowReleasedPulls,
-            'GITHUB_TOKEN'        => getenv('GITHUB_TOKEN'),
         ]);
     }
     $cli->fetchPulls($queryParams);
