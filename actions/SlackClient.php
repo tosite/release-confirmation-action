@@ -34,50 +34,54 @@ class SlackClient
         return $this;
     }
 
-    protected function buildMessage($pulls)
+    protected function buildMessage($repo, $pulls)
     {
-        $message = '';
+        $message = "*:open_file_folder:Repository: {$repo}*";
         foreach ($pulls as $pull) {
             $message .= "<{$pull['html_url']}|{$pull['title']}> by {$pull['user']['login']}\n";
         }
         return $message;
     }
 
-    public function setUnreleasedParams($title, $pulls)
+    public function setUnreleasedParams($title, $repoPulls)
     {
-        $message = $this->buildMessage($pulls);
+        $message = '';
+        foreach ($repoPulls as $repo => $pulls) {
+            $message .= $this->buildMessage($repo, $repoPulls);
+        }
         if (empty($message)) {
-            return $this;
+            return;
         }
         $this->attachments = array_merge(
             [
                 [
                     'title' => $title,
-                    'text'  => $this->buildMessage($pulls),
+                    'text'  => $message,
                     'color' => '#bf1e56',
                 ]
             ],
             $this->attachments);
-        return $this;
     }
 
-    public function setReleasedParams($title, $pulls)
+    public function setReleasedParams($title, $repoPulls)
     {
-        $message = $this->buildMessage($pulls);
+        $message = '';
+        foreach ($repoPulls as $repo => $pulls) {
+            $message .= $this->buildMessage($repo, $repoPulls);
+        }
         if (empty($message)) {
-            return $this;
+            return;
         }
         $this->attachments = array_merge(
             $this->attachments,
             [
                 [
                     'title' => $title,
-                    'text'  => $this->buildMessage($pulls),
+                    'text'  => $message,
                     'color' => '#a4c520',
                 ]
             ]
         );
-        return $this;
     }
 
     protected function buildAttachmentMessage()
@@ -88,6 +92,7 @@ class SlackClient
             'attachments' => $this->attachments,
         ];
         if ($this->isDebug) {
+            echo "[DEBUG]show attachment:\n";
             var_dump($params);
         }
         return $params;
@@ -103,6 +108,7 @@ class SlackClient
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($this->buildAttachmentMessage()));
         $result = curl_exec($curl);
         if ($this->isDebug) {
+            echo "[DEBUG]show response:\n";
             var_dump($result);
         }
         curl_close($curl);

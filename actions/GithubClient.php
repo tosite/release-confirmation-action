@@ -58,6 +58,7 @@ class GithubClient
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
         $res = curl_exec($curl);
         if ($this->isDebug) {
+            echo "[DEBUG]show response:\n";
             var_dump($res);
         }
         var_dump(curl_errno($curl));
@@ -94,6 +95,7 @@ class GithubClient
         $this->setAuth($curl);
         $url = $this->setUrl("pulls", $options);
         if ($this->isDebug) {
+            echo "[DEBUG]show url:\n";
             var_dump(['url' => $url]);
         }
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -112,6 +114,7 @@ class GithubClient
         $notifies = [];
         foreach ($this->pulls as $pull) {
             if ($this->isDebug) {
+                echo "[DEBUG]show link:\n";
                 var_dump("{$pull['html_url']} - {$pull['title']}");
             }
             foreach ($pull['labels'] as $label) {
@@ -128,6 +131,7 @@ class GithubClient
         $notifies = [];
         foreach ($this->pulls as $pull) {
             if ($this->isDebug) {
+                echo "[DEBUG]show link:\n";
                 var_dump("{$pull['html_url']} - {$pull['title']}");
             }
             $mergedAt = strtotime($pull['merged_at']);

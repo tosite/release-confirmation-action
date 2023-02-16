@@ -92,12 +92,13 @@ jobs:
 
 ### nofify action
 
-|key| values                            |required|description|
-| --- |-----------------------------------| --- | --- |
-| slackWebhook | `https://hooks.slack.com/services/xxxx/xxxx/xxxxx`                              | ⭕ | https://slack.com/services/new/incoming-webhook |
-| notifySubject | `string`                          | optional | Title to notify Slack. |
-| unreleasedPullsSubject | `string`                          | optional | Title to unreleased. |
-| mention | `<@USER_ID>, <!here>, <!channel>` | optional | Specify the user to mentions. |
-| showReleasedPulls | `on=1, off=0`                     | optional | Whether to be notified of released pull requests. |
-| releasedPullsSubject | `string`                          | optional | Title to released(To enable, set showReleasedPulls to 1). |
-| releasedDays | `5`                               | optional | How many days prior to the release do you want to pull a released pull request?(To enable, set showReleasedPulls to 1) |
+|key| values                                             |required|description|
+| --- |----------------------------------------------------| --- | -- |
+| slackWebhook | `https://hooks.slack.com/services/xxxx/xxxx/xxxxx` | ⭕ | https://slack.com/services/new/incoming-webhook |
+| notifySubject | `string`                                           | optional | Title to notify Slack. |
+| TargetRepositories | `your/repoA, your/repoB`                           | optional | These are the repositories that will be monitored.(default: repository where the action is running) |
+| unreleasedPullsSubject | `string`                                           | optional | Title to unreleased. |
+| mention | `<@USER_ID>, <!here>, <!channel>`                  | optional | Specify the user to mentions. |
+| showReleasedPulls | `on=1, off=0`                                      | optional | Whether to be notified of released pull requests. |
+| releasedPullsSubject | `string`                                           | optional | Title to released(To enable, set showReleasedPulls to 1). |
+| releasedDays | `5`                                                | optional | How many days prior to the release do you want to pull a released pull request?(To enable, set showReleasedPulls to 1) |

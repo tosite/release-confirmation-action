@@ -36,6 +36,9 @@ inputs:
   unreleasedPullsSubject:
     description: 'Slack Section Subject.'
     default: 'There are pull requests that have not been released.'
+  TargetRepositories:
+    description: 'These are the repositories that will be monitored.(e.g. "repo1,repo2,repo3")'
+    default: "${{ github.repository }}"
   # optional params(action = notify)
   mention:
     description: 'Set slack user_id(e.g. <@USER_ID>|<!here>|<!channel>)'
@@ -69,3 +72,4 @@ runs:
     UNRELEASED_PULLS_SUBJECT: ${{ inputs.unreleasedPullsSubject }}
     RELEASED_PULLS_SUBJECT: ${{ inputs.releasedPullsSubject }}
     RELEASED_DAYS: ${{ inputs.releasedDays }}
+    TARGET_REPOSITORIES: ${{ inputs.TargetRepositories }}

@@ -7,9 +7,6 @@ $keys = [
     'repo',
     'number',
 ];
-if ($isDebug) {
-    var_dump(['key' => $keys, 'values' => $argv]);
-}
 $params = array_combine($keys, $argv);
 $params['merged_label'] = getenv('MERGED_LABEL');
 $params['released_label'] = getenv('RELEASED_LABEL');
