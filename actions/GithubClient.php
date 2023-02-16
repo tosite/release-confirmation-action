@@ -109,6 +109,9 @@ class GithubClient
         }
         curl_close($curl);
 
+        if ($this->isDebug) {
+            var_dump($res);
+        }
         $this->pulls = json_decode($res, true);
     }
 
